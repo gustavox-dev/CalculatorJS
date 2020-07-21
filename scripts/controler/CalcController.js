@@ -12,6 +12,9 @@
     11: Sempre que for criado um atributo privado é necessário criar um getter and setter
     12: Milisegundos => 1 segundo = 1000, 10 segundos = 10000
     13: querySelectorAll => Traz todos os elementos que são filhos da classe ou id selecionado
+    14: for each -> Para cada
+    15: replace -> Substitua
+    16: addEventListener() -> Recebe 2 parametros, por exemplo, o 'click' e o que deve ser feito (declarado na (função (e))
 */ 
 
 class CalcController {
@@ -25,7 +28,7 @@ class CalcController {
         this._currentDate       
         this.initialize()
         this.setDisplayDateTime
-        this.initButtonsEvents
+        this.initButtonsEvents()
 
     }
 
@@ -39,9 +42,18 @@ class CalcController {
     }
 
     initButtonsEvents() {
+
         let buttons = document.querySelectorAll("#buttons > g, #parts > g")
 
         
+
+        buttons.forEach((btn, index)=>{
+
+            btn.addEventListener('click', e=> {
+                console.log(btn.className.baseVal.replace("btn-", ""))
+            })
+
+        })
     }
 
 
