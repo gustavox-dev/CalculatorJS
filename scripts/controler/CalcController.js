@@ -1,5 +1,6 @@
 
-/*  1: Classe = conjunto de atributos e metodos
+/*  
+    1: Classe = conjunto de atributos e metodos
     2: Encapsulamento protege para saber quem pode acessar aquele metodo.
     3: public -> Todos acessam 
     4: Atributos definidos com o '_ : Ex: this._displayCalc' estão como protected. Só outros atributos e metodos de dentro da própria classe podem ter acesso a esses atributos. 
@@ -15,6 +16,7 @@
     14: for each -> Para cada
     15: replace -> Substitua
     16: addEventListener() -> Recebe 2 parametros, por exemplo, o 'click' e o que deve ser feito (declarado na (função (e))
+    17: Split() -> transforma uma string em array
 */ 
 
 class CalcController {
@@ -27,7 +29,7 @@ class CalcController {
         this._timeEl = document.querySelector("#hora")
         this._currentDate       
         this.initialize()
-        this.setDisplayDateTime
+        this.setDisplayDateTime()
         this.initButtonsEvents()
 
     }
@@ -41,16 +43,30 @@ class CalcController {
 
     }
 
+    addEventListenerAll(element, event, fn) {
+
+        events.split(' ').forEach(event => {
+
+            element.addEventListener(event, fn, false)
+
+        })
+
+    }
+
     initButtonsEvents() {
 
         let buttons = document.querySelectorAll("#buttons > g, #parts > g")
 
-        
-
         buttons.forEach((btn, index)=>{
 
-            btn.addEventListener('click', e=> {
+            this.addEventListenerAll('click drag mouseover', e=> {
                 console.log(btn.className.baseVal.replace("btn-", ""))
+            })
+
+            this.addEventListenerAll(btn, "mouseover mouseup mousedown", e => {
+
+                btn.style.cursor = "pointer" // Altera o ponteiro do mouse para mostrar a mão de link
+
             })
 
         })
