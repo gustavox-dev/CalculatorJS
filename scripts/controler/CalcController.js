@@ -19,6 +19,10 @@
     17: Split() -> transforma uma string em array
     18: .push() -> Adiciona um elemento no Array
     19: .pop() -> remove o ultimo elemento do array
+    20: .length -> Retorna a quantidade de elementos de dentro do Array
+    21: isNaN -> Retorna 'true' quando o elemento não é um número
+    22: .toString() -> Transforma um 
+    23: indexOf -> retorna o valor solicitado de dentro da String
 */ 
 
 class CalcController {
@@ -69,7 +73,49 @@ class CalcController {
 
     }
 
+    getLastOperation() {
+
+        return this._operation[this._operation.length-1]
+
+    }
+
+    setLastOperation(value) {
+        this._operation[this._operation.length-1] = value
+    }
+
+    isOperator(value) {
+
+        return (['+', '-', '*', '%', '/'].indexOf(value) > -1) 
+
+    }
+
+    
     addOperation(value) {
+
+        //se a ultima operação não tiver numero
+        if(isNaN(this.getLastOperation())) {
+
+            //String -> Se for operador executará esse comando
+            
+            if(this.isOperator(value)){
+                // Trocar o operador
+
+                this.setLastOperation(value)
+
+            } else if (isNaN(value)){
+                // Outra coisa
+                console.log(value)
+            } else {
+                this._operation.push(value)
+
+
+            }
+
+        } else {//Número
+            let newValue = this.getLastOperation().toString() + value.toString()
+            this.setLastOperation(parseInt(newValue))
+        }
+
 
         this._operation.push(value) //Adiciona um elemento ao Array
 
@@ -95,25 +141,29 @@ class CalcController {
                 this.clearEntry()
                 break
             case 'soma':
-                
+                this.addOperation('+')
                 break
             case 'subtracao':
-                
+                this.addOperation('-')
                 break
 
             case 'divisao':
-                
+                this.addOperation('/')
                 break
 
             case 'multiplicacao':
-                
+                this.addOperation('*')
                 break
 
             case 'porcento':
-                
+                this.addOperation('%')
                 break
             case 'igual':
-                
+                this.addOperation('=')
+                break
+
+            case 'ponto':
+                this.addOperation('.')
                 break
 
             case '0':
