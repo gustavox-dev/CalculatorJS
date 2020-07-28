@@ -23,6 +23,8 @@
     21: isNaN -> Retorna 'true' quando o elemento não é um número
     22: .toString() -> Transforma um 
     23: indexOf -> retorna o valor solicitado de dentro da String
+    24: eval -> realiza calculos
+    25: join -> substitui as virgulas, se declarado como .join("") apaga a virgula da strig
 */ 
 
 class CalcController {
@@ -53,7 +55,7 @@ class CalcController {
 
     addEventListenerAll(element, events, fn) {
 
-        events.split(' ').forEach(event => {
+        events.split(` `).forEach(event => {
 
             element.addEventListener(event, fn, false)
 
@@ -89,8 +91,44 @@ class CalcController {
 
     }
 
+    pushOperation(value) {
+
+        this._operation.push(value)
+
+        if(this._operation.length > 3) {
+
+            this.calc()
+
+        }
+
+    }
+
+    calc() {
+
+        let last = this._operation.pop()
+
+        let result = eval(this._operation.join(""))
+
+        this._operation = [result, last]
+
+        this.setLastNumberToDisplay()
+    }
+
+    setLastNumberToDisplay() {
+
+        let lastNumber
+        for(let i = this._operation.length-1; i >= 0; i--) {
+
+            if(!this.isOperator(this._operation[i])){
+                lastNumber = this._operation[i]
+                break
+            }
+        }
+        this.displayCalc = lastNumber
+    }
     
     addOperation(value) {
+
 
         //se a ultima operação não tiver numero
         if(isNaN(this.getLastOperation())) {
@@ -98,28 +136,37 @@ class CalcController {
             //String -> Se for operador executará esse comando
             
             if(this.isOperator(value)){
-                // Trocar o operador
-
-                this.setLastOperation(value)
+                
+                this.setLastOperation(value)// Trocar o operador
 
             } else if (isNaN(value)){
                 // Outra coisa
-                console.log(value)
+                console.log('Outra coisa', value)
             } else {
-                this._operation.push(value)
 
-
+                this.pushOperation(value)//Adiciona um elemento ao Array
+                this.setLastNumberToDisplay()
             }
 
         } else {//Número
-            let newValue = this.getLastOperation().toString() + value.toString()
-            this.setLastOperation(parseInt(newValue))
+
+            if(this.isOperator(value)) {
+
+                this.pushOperation(value)
+
+            } else {
+                let newValue = this.getLastOperation().toString() + value.toString()
+                this.setLastOperation(parseInt(newValue))
+            
+                // Atualizar display
+
+                this.setLastNumberToDisplay()
+            
+            }
+            
+
+            
         }
-
-
-        this._operation.push(value) //Adiciona um elemento ao Array
-
-        console.log(this._operation)
 
     }
 
@@ -159,7 +206,7 @@ class CalcController {
                 this.addOperation('%')
                 break
             case 'igual':
-                this.addOperation('=')
+                
                 break
 
             case 'ponto':
@@ -181,7 +228,7 @@ class CalcController {
 
             default:
                 this.setError()
-            break
+                break
 
 
         }
@@ -203,7 +250,7 @@ class CalcController {
 
             this.addEventListenerAll(btn, "mouseover mouseup mousedown", e => {
 
-                btn.style.cursor = "pointer" // Altera o ponteiro do mouse para mostrar a mão de link
+                btn.style.cursor = "pointer" // Altera  estilo do ponteiro do mouse para mostrar a mão de link
 
             })
 
