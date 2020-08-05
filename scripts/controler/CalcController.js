@@ -25,6 +25,7 @@
     23: indexOf -> retorna o valor solicitado de dentro da String
     24: eval -> realiza calculos
     25: join -> substitui as virgulas, se declarado como .join("") apaga a virgula da strig
+    26: key -> Retorna o valor digitado
 */ 
 
 class CalcController {
@@ -43,7 +44,7 @@ class CalcController {
         this.initialize()
         this.setDisplayDateTime()
         this.initButtonsEvents()
-        
+        this.initKeyBoard()
 
     }
 
@@ -55,6 +56,58 @@ class CalcController {
         setInterval(() => { this.setDisplayDateTime() }, 1000)
 
         this.setLastNumberToDisplay()
+
+    }
+
+    initKeyBoard() {
+
+        document.addEventListener('keyup', e => {
+
+            console.log()
+
+            switch (e.key) {
+
+                case 'Escape' :
+                    this.clearAll()
+                    break
+    
+                case 'Backspace':
+                    this.clearEntry()
+                    break
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                case '%':
+                    this.addOperation(e.key)
+                    break
+                
+                case 'Enter':
+                case '=':
+                    this.calc()
+                    break
+    
+                case '.':
+                case ',':
+                    this.addDot()
+                    break
+    
+                case '0':
+                case '1':
+                case '2': 
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':            
+                    this.addOperation(parseInt(e.key))
+                    break
+            }
+    
+
+        })
 
     }
 
